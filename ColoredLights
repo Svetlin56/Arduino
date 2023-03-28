@@ -1,0 +1,53 @@
+#include "thingProperties.h"
+#include <Arduino_LSM6DSOX.h>
+
+void setup() {
+
+  Serial.begin(9600);
+  delay(1500);
+  
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+
+  initProperties();
+
+  ArduinoCloud.begin(ArduinoIoTPreferredConnection);
+
+  setDebugMessageLevel(2);
+  ArduinoCloud.printDebugInfo();
+
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  }
+}
+
+void loop() {
+  ArduinoCloud.update();
+
+
+  if (IMU.accelerationAvailable()) {
+    IMU.readAcceleration(a_x, a_y, a_z);
+  }
+}
+void onRgbLightChange()  {
+  uint8_t r, g, b;
+
+  rgb_light.getValue().getRGB(r, g, b);
+
+  int red = map(r, 0, 255, 255, 0);
+  int green = map(g, 0, 255, 255, 0);
+  int blue = map(b, 0, 255, 255, 0);
+
+  if (rgb_light.getSwitch()) {
+    analogWrite(LEDR, red);
+    analogWrite(LEDG, green);
+    analogWrite(LEDB, blue);
+  }
+  else {
+    analogWrite(LEDR, 255);
+    analogWrite(LEDG, 255);
+    analogWrite(LEDB, 255);
+  }
+}
