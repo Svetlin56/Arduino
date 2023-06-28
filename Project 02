@@ -9,13 +9,13 @@ void setup()
 void loop()
 {
   switchState=digitalRead(2);
-  if(switchState==LOW)//il pulsante non e permuto
+  if(switchState==LOW)
   {
     digitalWrite(3, HIGH); //LED verde
     digitalWrite(4, LOW); //LED rosso
     digitalWrite(5, LOW);//LED rosso    
   }
-  else//il pulsante e premuto
+  else
   {
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
@@ -26,6 +26,7 @@ void loop()
     delay(1000);
   }
 }
+
 // se switchWrite e LOW:
 //  accendi il LED verde
 //  spegni il LED rosso
